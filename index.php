@@ -8,7 +8,9 @@
 
 
 // SELECT Query
-$sql = "SELECT * FROM news";
+$sql = "SELECT news.id as news_id, news.title as news_title, news.text, news.category_id, categories.id as cat_id, categories.title as category_title 
+FROM news
+ INNER JOIN categories ON news.category_id = categories.id";
 $result = mysqli_query($conn, $sql);
 $news = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
@@ -44,15 +46,15 @@ if(isset($_POST['action']) && $_POST['action'] == 'delete') {
             </tr>
             <?php foreach($news as $value): ?>
                 <tr>
-                    <td><?= $value['title'] ?></td>
+                    <td><?= $value['news_title'] ?></td>
                     <td><?= $value['text'] ?></td>
-                    <td><?= $value['category_id'] ?></td>
+                    <td><?= $value['category_title'] ?></td>
                    
                     <td class="actions">
-                        <a class="edit" href="edit.php?id=<?= $value['id'] ?>">Edit</a>
+                        <a class="edit" href="edit.php?id=<?= $value['news_id'] ?>">Edit</a>
                         <form action="" method="post">
                             <input type="hidden" name="action" value="delete">
-                            <input type="hidden" name="id" value="<?= $value['id'] ?>">
+                            <input type="hidden" name="id" value="<?= $value['news_id'] ?>">
                             <button class="delete">Delete</button>
                         </form>
                     </td>
